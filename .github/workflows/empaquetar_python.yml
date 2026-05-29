@@ -31,7 +31,7 @@ jobs:
     # 4. Congelar el script en un único archivo .exe
     - name: Generar ejecutable con PyInstaller
       run: |
-        pyinstaller --onedir --windowed main.py
+        pyinstaller --onefile --windowed main.py
 
     # 5. Subir la carpeta de distribución como artefacto descargable
     - name: Subir ejecutable como artefacto
