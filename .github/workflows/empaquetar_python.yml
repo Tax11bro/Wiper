@@ -1,0 +1,41 @@
+name: Empaquetar script de Python a .exe
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    # 1. Clonar el código del repositorio
+    - name: Clonar el repositorio
+      uses: actions/checkout@v4
+
+    # 2. Configurar el entorno de Python en la máquina virtual
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # Especifica la versión de Python que uses
+
+    # 3. Instalar PyInstaller y las dependencias de tu proyecto
+    - name: Instalar dependencias y PyInstaller
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller
+        if (Test-Path requirements.txt) { pip install -r requirements.txt }
+
+    # 4. Congelar el script en un único archivo .exe
+    - name: Generar ejecutable con PyInstaller
+      run: |
+        pyinstaller --onedir --windowed main.py
+
+    # 5. Subir la carpeta de distribución como artefacto descargable
+    - name: Subir ejecutable como artefacto
+      uses: actions/upload-artifact@v4
+      with:
+        name: programa-python-windows
+        path: dist/main/
