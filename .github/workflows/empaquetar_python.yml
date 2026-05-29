@@ -19,7 +19,7 @@ jobs:
     - name: Configurar Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11' # Especifica la versión de Python que uses
+        python-version: '3.11'
 
     # 3. Instalar PyInstaller y las dependencias de tu proyecto
     - name: Instalar dependencias y PyInstaller
@@ -28,14 +28,14 @@ jobs:
         pip install pyinstaller
         if (Test-Path requirements.txt) { pip install -r requirements.txt }
 
-    # 4. Congelar el script en un único archivo .exe
+    # 4. Congelar el script en un único archivo .exe independiente
     - name: Generar ejecutable con PyInstaller
       run: |
         pyinstaller --onefile --windowed main.py
 
-    # 5. Subir la carpeta de distribución como artefacto descargable
+    # 5. Subir el archivo único .exe resultante como artefacto
     - name: Subir ejecutable como artefacto
       uses: actions/upload-artifact@v4
       with:
         name: programa-python-windows
-        path: dist/main/
+        path: dist/main.exe
